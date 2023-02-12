@@ -6,12 +6,13 @@ class User {
   final String email;
   final String password;
   final String name;
-  User({
-    required this.id,
-    required this.email,
-    required this.password,
-    required this.name,
-  });
+  final String token;
+  User(
+      {required this.id,
+      required this.email,
+      required this.password,
+      required this.name,
+      required this.token});
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -19,16 +20,17 @@ class User {
       'email': email,
       'password': password,
       'name': name,
+      'token': token
     };
   }
 
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
-      id: map['_id'] as String,
-      email: map['email'] as String,
-      password: map['password'] as String,
-      name: map['name'] as String,
-    );
+        id: map['_id'] ?? '',
+        email: map['email'] ?? '',
+        password: map['password'] ?? '',
+        name: map['name'] ?? '',
+        token: map['token'] ?? '');
   }
 
   String toJson() => json.encode(toMap());

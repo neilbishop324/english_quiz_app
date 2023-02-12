@@ -22,9 +22,21 @@ class _SignUpComponentState extends State<SignUpComponent> {
     return SizedBox(
       width: context.width(),
       child: Column(children: [
-        eqTextField(controller: _nameController, placeHolder: "Name"),
-        eqTextField(controller: _emailController, placeHolder: "Email"),
-        eqTextField(controller: _passwordController, placeHolder: "Password"),
+        eqTextField(
+            controller: _nameController,
+            placeHolder: "Name",
+            type: TextInputType.name,
+            required: true),
+        eqTextField(
+            controller: _emailController,
+            placeHolder: "Email",
+            type: TextInputType.emailAddress,
+            required: true),
+        eqTextField(
+            controller: _passwordController,
+            placeHolder: "Password",
+            type: TextInputType.visiblePassword,
+            required: true),
         eqButton(text: "Sign Up", onPressed: signUpUser)
       ]),
     );

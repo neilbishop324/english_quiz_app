@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:english_quiz_app/logic/user/cubit/user_cubit.dart';
 import 'package:english_quiz_app/util/error_handling.dart';
 import 'package:english_quiz_app/util/global_variables.dart';
 import 'package:english_quiz_app/util/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,30 +19,25 @@ class AuthService {
       required String password,
       required String name}) async {
     try {
-      print("print 1");
-      User user = User(id: "", email: email, password: password, name: name);
-      http.Response res = await http.post(Uri.parse('$uri/api/signup'),
+      User user =
+          User(id: "", email: email, password: password, name: name, token: "");
+      http.Response res = await http.post(Uri.parse('$uri/auth/signup'),
           body: user.toJson(),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           });
-      print("print 2");
 
       if (context.mounted) {
-        print("print 3");
         httpErrorHandle(
           response: res,
           context: context,
           onSuccess: () {
-            print("print 4");
             snackBar(context,
                 title: "Account created! Login with the same credentials");
           },
         );
-        print("print 5");
       }
     } catch (e) {
-      print("print 6: $e");
       snackBar(context, title: e.toString());
     }
   }
@@ -51,8 +48,7 @@ class AuthService {
       required String password,
       required VoidCallback onSignedIn}) async {
     try {
-      print("task 1");
-      http.Response res = await http.post(Uri.parse('$uri/api/signin'),
+      http.Response res = await http.post(Uri.parse('$uri/auth/signin'),
           body: jsonEncode({
             'email': email,
             'password': password,
@@ -61,26 +57,57 @@ class AuthService {
             'Content-Type': 'application/json; charset=UTF-8',
           });
 
-      print("task 2");
-
       if (context.mounted) {
-        print("task 3");
         httpErrorHandle(
           response: res,
           context: context,
           onSuccess: () async {
-            print("task 4");
             SharedPreferences prefs = await SharedPreferences.getInstance();
+            if (context.mounted) {
+              context.read<UserCubit>().setUser(res.body);
+            }
             await prefs.setString(
                 'x-auth-token', jsonDecode(res.body)['token']);
-            print("task 5");
             onSignedIn();
           },
         );
-        print("task 6");
       }
     } catch (e) {
-      print("task 7: $e");
+      snackBar(context, title: e.toString());
+    }
+  }
+
+  void getUserData(BuildContext context) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString("x-auth-token");
+
+      if (token == null) {
+        prefs.setString("x-auth-token", "");
+      }
+
+      var tokenRes = await http.post(Uri.parse("$uri/auth/tokenIsValid"),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            "x-auth-token": token!
+          });
+
+      var response = jsonDecode(tokenRes.body);
+      if (response == true) {
+        http.Response userRes = await http.get(
+          Uri.parse("$uri/auth/"),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            "x-auth-token": token
+          },
+        );
+
+        var user = userRes.body;
+        if (context.mounted) {
+          context.read<UserCubit>().setUser(user);
+        }
+      }
+    } catch (e) {
       snackBar(context, title: e.toString());
     }
   }

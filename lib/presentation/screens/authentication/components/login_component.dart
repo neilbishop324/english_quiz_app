@@ -22,8 +22,16 @@ class _LoginComponentState extends State<LoginComponent> {
     return SizedBox(
       width: context.width(),
       child: Column(children: [
-        eqTextField(controller: _emailController, placeHolder: "Email"),
-        eqTextField(controller: _passwordController, placeHolder: "Password"),
+        eqTextField(
+            controller: _emailController,
+            placeHolder: "Email",
+            type: TextInputType.emailAddress,
+            required: true),
+        eqTextField(
+            controller: _passwordController,
+            placeHolder: "Password",
+            type: TextInputType.visiblePassword,
+            required: true),
         eqButton(text: "Sign In", onPressed: signInUser)
       ]),
     );

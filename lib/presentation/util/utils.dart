@@ -2,10 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 Widget eqTextField(
-    {required TextEditingController controller, required String placeHolder}) {
-  return TextField(
+    {required TextEditingController controller,
+    required String placeHolder,
+    required TextInputType type,
+    required bool required}) {
+  return TextFormField(
     controller: controller,
+    keyboardType: type,
+    obscureText: type == TextInputType.visiblePassword,
+    enableSuggestions: type != TextInputType.visiblePassword,
+    autocorrect: type != TextInputType.visiblePassword,
     decoration: InputDecoration(labelText: placeHolder),
+    validator: (value) {
+      if (value.isEmptyOrNull && required) {
+        return '$placeHolder is required';
+      }
+      return null;
+    },
   ).paddingAll(16);
 }
 
