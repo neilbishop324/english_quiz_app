@@ -5,20 +5,25 @@ import 'package:http/http.dart' as http;
 import 'package:nb_utils/nb_utils.dart';
 import '../../util/global_variables.dart';
 import '../model/word.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 abstract class WordRepository {
-  Future<Word?> fetchWord(LoadWord LoadWord);
+  Future<Word?> fetchWord(LoadWord loadedWord);
 }
 
 class WordRepo extends WordRepository {
-  String oxfordAppId = "2b0a920d";
-  String oxfordAppKey = "a808a5b180a12a330c91e0f6112ce3a3";
-
+  String oxfordApiUri =
+      "https://od-api.oxforddictionaries.com:443/api/v2/entries";
   @override
-  Future<Word?> fetchWord(LoadWord LoadWord) async {
+  Future<Word?> fetchWord(LoadWord loadedWord) async {
     try {
+      await dotenv.load(fileName: "secret.env");
+      String uri = dotenv.env['URI'].toString();
+      String oxfordAppId = dotenv.env['OXFORD_APP_ID'].toString();
+      String oxfordAppKey = dotenv.env['OXFORD_APP_KEY'].toString();
+
       final url =
-          Uri.parse('$oxfordApiUri/en-gb/${LoadWord.word.toLowerCase()}');
+          Uri.parse('$oxfordApiUri/en-gb/${loadedWord.word.toLowerCase()}');
       http.Response response = await http.get(url, headers: {
         'app_id': oxfordAppId,
         'app_key': oxfordAppKey,
@@ -27,8 +32,8 @@ class WordRepo extends WordRepository {
         final body = utf8.decode(response.bodyBytes);
         final content = json.decode(body);
         String? tr;
-        if (!LoadWord.fromSublist) {
-          tr = await getTurkishTranslation(LoadWord.word);
+        if (!loadedWord.fromSublist) {
+          tr = await getTurkishTranslation(loadedWord.word, uri);
         }
         return Word.fromMap(content, tr);
       } else {
@@ -41,9 +46,9 @@ class WordRepo extends WordRepository {
     return null;
   }
 
-  Future<String?> getTurkishTranslation(String word) async {
+  Future<String?> getTurkishTranslation(String word, String uri) async {
     try {
-      final url = "$uri/word/$word";
+      final url = "$uri$apiUri/word/$word";
       http.Response response = await http.post(Uri.parse(url), headers: {
         'Content-Type': 'application/json; charset=UTF-8',
       });

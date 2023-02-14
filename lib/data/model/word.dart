@@ -249,7 +249,7 @@ class Sense {
           .map((value) => value.toString())
           .toList(),
       examples: ((map['examples'] as List<dynamic>?) ?? [])
-          .map((value) => value.toString())
+          .map((value) => value["text"].toString())
           .toList(),
       types: domainClasses,
     );

@@ -19,3 +19,9 @@ class PronIsPlaying extends WordEvent {
 
   PronIsPlaying(this.isPlaying);
 }
+
+class AddFavorite extends WordEvent {
+  final bool willBeFavorite;
+
+  AddFavorite(this.willBeFavorite);
+}

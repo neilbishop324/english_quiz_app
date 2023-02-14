@@ -21,7 +21,8 @@ class WordBloc extends Bloc<WordEvent, WordState> {
         if (word == null) {
           emit(WordError());
         } else {
-          emit(WordLoaded(word!, false));
+          final inFavorites = await isInFavorites();
+          emit(WordLoaded(word!, false, inFavorites));
         }
       });
     });
@@ -29,8 +30,19 @@ class WordBloc extends Bloc<WordEvent, WordState> {
     on<PronIsPlaying>((event, emit) async {
       if (state is WordLoaded) {
         final state = this.state as WordLoaded;
-        emit(WordLoaded(state.data, event.isPlaying));
+        emit(WordLoaded(state.data, event.isPlaying, state.isInFavorites));
       }
     });
+
+    on<AddFavorite>((event, emit) async {
+      if (state is WordLoaded) {
+        final state = this.state as WordLoaded;
+        emit(WordLoaded(state.data, state.isPlaying, event.willBeFavorite));
+      }
+    });
+  }
+
+  Future<bool> isInFavorites() async {
+    return false;
   }
 }

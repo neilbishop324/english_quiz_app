@@ -10,8 +10,9 @@ class WordLoading extends WordState {}
 class WordLoaded extends WordState {
   final Word data;
   final bool isPlaying;
+  final bool isInFavorites;
 
-  WordLoaded(this.data, this.isPlaying);
+  WordLoaded(this.data, this.isPlaying, this.isInFavorites);
 }
 
 class WordError extends WordState {}

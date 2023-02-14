@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:english_quiz_app/data/model/sublist_word.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:nb_utils/nb_utils.dart';
 import '../../util/global_variables.dart';
@@ -13,10 +14,13 @@ class SublistRepo extends SublistRepository {
   Future<List<SublistWord>?> fetchSublist({required int listId}) async {
     try {
       var sublist = <SublistWord>[];
-      http.Response res = await http
-          .post(Uri.parse('$uri/sublist/$listId'), headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      });
+      await dotenv.load(fileName: "secret.env");
+      String uri = dotenv.env['URI'].toString();
+      http.Response res = await http.post(
+          Uri.parse('$uri$apiUri/sublist/$listId'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          });
 
       if (res.statusCode == 200) {
         var jsonData = json.decode(res.body);
