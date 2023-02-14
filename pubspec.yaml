@@ -40,6 +40,7 @@ dependencies:
   nb_utils: ^5.0.5
   random_avatar: ^0.0.8
   flutter_bloc: ^8.1.2
+  audioplayers: ^3.0.1
 
 dev_dependencies:
   flutter_test:

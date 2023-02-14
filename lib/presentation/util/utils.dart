@@ -33,3 +33,7 @@ Widget eqButton({required String text, required VoidCallback onPressed}) {
     ),
   ).cornerRadiusWithClipRRect(30).paddingAll(12);
 }
+
+Widget nothing() {
+  return const SizedBox();
+}

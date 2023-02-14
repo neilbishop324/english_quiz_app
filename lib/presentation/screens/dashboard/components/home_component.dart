@@ -1,6 +1,9 @@
+import 'package:english_quiz_app/logic/sublist/bloc/sublist_bloc.dart';
+import 'package:english_quiz_app/presentation/screens/sublist/sublist_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class HomeComponent extends StatefulWidget {
@@ -21,7 +24,11 @@ class _HomeComponentState extends State<HomeComponent> {
         itemCount: 10,
         itemBuilder: (context, index) {
           return InkWell(
-            onTap: () {},
+            onTap: () {
+              BlocProvider.of<SublistBloc>(context).add(SublistData(index + 1));
+              Navigator.pushNamed(context, SublistDetailsScreen.routeName,
+                  arguments: SublistDetailsArguments(index + 1));
+            },
             child: Container(
               decoration: BoxDecoration(
                 color: white,
