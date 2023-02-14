@@ -23,30 +23,36 @@ class _HomeComponentState extends State<HomeComponent> {
         shrinkWrap: true,
         itemCount: 10,
         itemBuilder: (context, index) {
-          return InkWell(
-            onTap: () {
-              BlocProvider.of<SublistBloc>(context).add(SublistData(index + 1));
-              Navigator.pushNamed(context, SublistDetailsScreen.routeName,
-                  arguments: SublistDetailsArguments(index + 1));
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                color: white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: const Offset(0, 3), // changes position of shadow
-                  ),
-                ],
-              ),
-              child: Text(
-                "Sublist ${index + 1}",
-                style: const TextStyle(fontSize: 18),
-              ).paddingAll(20),
-            ).paddingAll(8).cornerRadiusWithClipRRect(8),
-          );
+          return Container(
+            decoration: BoxDecoration(
+              color: white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 2,
+                  blurRadius: 5,
+                  offset: const Offset(4, 6), // changes position of shadow
+                ),
+              ],
+            ),
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                  onTap: () {
+                    BlocProvider.of<SublistBloc>(context)
+                        .add(SublistData(index + 1));
+                    Navigator.pushNamed(context, SublistDetailsScreen.routeName,
+                        arguments: SublistDetailsArguments(index + 1));
+                  },
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Text(
+                      "Sublist ${index + 1}",
+                      style: const TextStyle(fontSize: 18),
+                    ).paddingAll(20),
+                  )),
+            ),
+          ).paddingAll(8).cornerRadiusWithClipRRect(8);
         },
       ).paddingAll(8),
     );
