@@ -3,41 +3,59 @@ import 'package:english_quiz_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../../../util/constants.dart';
 import '../../../util/utils.dart';
 
-class LoginComponent extends StatefulWidget {
-  const LoginComponent({super.key});
-
-  @override
-  State<LoginComponent> createState() => _LoginComponentState();
-}
-
-class _LoginComponentState extends State<LoginComponent> {
+class LoginComponent extends StatelessWidget {
+  final AuthService _authService = AuthService();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _authService = AuthService();
+  LoginComponent({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: context.width(),
-      child: Column(children: [
-        eqTextField(
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
+          TextFormField(
             controller: _emailController,
-            placeHolder: "Email",
-            type: TextInputType.emailAddress,
-            required: true),
-        eqTextField(
+            keyboardType: TextInputType.emailAddress,
+            decoration: const InputDecoration(
+              labelText: 'Email',
+              prefixIcon: Icon(Icons.email),
+            ),
+          ),
+          16.height,
+          TextFormField(
             controller: _passwordController,
-            placeHolder: "Password",
-            type: TextInputType.visiblePassword,
-            required: true),
-        eqButton(text: "Sign In", onPressed: signInUser)
-      ]),
+            obscureText: true,
+            decoration: const InputDecoration(
+              labelText: 'Password',
+              prefixIcon: Icon(Icons.lock),
+            ),
+          ),
+          16.height,
+          ElevatedButton(
+            onPressed: () => signInUser(context),
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(24),
+              ),
+              backgroundColor: primaryColor,
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+              textStyle: const TextStyle(
+                fontSize: 18,
+              ),
+            ),
+            child: const Text('LOGIN'),
+          ),
+        ],
+      ),
     );
   }
 
-  void signInUser() {
+  void signInUser(BuildContext context) {
     _authService.signInUser(
       context: context,
       email: _emailController.text,

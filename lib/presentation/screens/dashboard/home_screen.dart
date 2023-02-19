@@ -6,6 +6,7 @@ import 'package:english_quiz_app/logic/user/cubit/user_cubit.dart';
 import 'package:english_quiz_app/presentation/screens/dashboard/components/collection_component.dart';
 import 'package:english_quiz_app/presentation/screens/dashboard/components/home_component.dart';
 import 'package:english_quiz_app/presentation/screens/dashboard/components/profile_component.dart';
+import 'package:english_quiz_app/util/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -33,8 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
     ProfileComponent(),
   ];
 
-  static final _selectedItemColor = Colors.amber[800];
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeState>(
@@ -50,7 +49,6 @@ class _HomeScreenState extends State<HomeScreen> {
           bottomNavigationBar: BottomNavigationBar(
             items: bottomNavBarItems(context),
             currentIndex: state.selectedIndex,
-            selectedItemColor: _selectedItemColor,
             onTap: (index) => _onItemTapped(index, context),
           ),
         );
@@ -59,23 +57,16 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   List<BottomNavigationBarItem> bottomNavBarItems(BuildContext context) {
-    return <BottomNavigationBarItem>[
-      const BottomNavigationBarItem(
+    return const <BottomNavigationBarItem>[
+      BottomNavigationBarItem(
         icon: Icon(Icons.home),
         label: 'Home',
       ),
       BottomNavigationBarItem(
-        activeIcon: Image.asset(
-          "assets/images/vocabulary.png",
-          width: 27,
-          height: 27,
-          color: _selectedItemColor,
-        ),
-        icon: Image.asset("assets/images/vocabulary.png",
-            width: 27, height: 27, color: const Color(0xff424150)),
-        label: 'Collection',
+        icon: Icon(Icons.favorite),
+        label: 'Favorites',
       ),
-      const BottomNavigationBarItem(
+      BottomNavigationBarItem(
         icon: Icon(Icons.account_box),
         label: 'Account',
       ),

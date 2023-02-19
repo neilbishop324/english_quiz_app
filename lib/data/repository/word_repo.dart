@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:english_quiz_app/logic/word/bloc/word_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:nb_utils/nb_utils.dart';
-import '../../util/global_variables.dart';
+import '../../util/constants.dart';
 import '../model/word.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 

@@ -10,6 +10,8 @@ part 'quiz_event.dart';
 part 'quiz_state.dart';
 
 class QuizBloc extends Bloc<QuizEvent, QuizState> {
+  static const wordError = "word meaning is failed to load";
+
   QuizBloc() : super(QuizInitial()) {
     on<AddQuestion>((event, emit) async {
       var questionIndex = 1;
@@ -41,7 +43,10 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
           option3: option3,
           option4: option4);
       if (question.word.isEmpty ||
-          event.options.firstWhere((element) => element.isTrue).title.isEmpty) {
+          [option1, option2, option3, option4]
+              .map((e) => e.title)
+              .toList()
+              .contains(wordError)) {
         emit(QuizError("Question failed to load"));
       }
       emit(QuizLoaded(question, questionIndex));
@@ -69,7 +74,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
 
   String getOptionTitle(Word? word) {
     if (word == null || word.senses.isEmpty) {
-      return "";
+      return wordError;
     }
     for (int i = 0; i < word.senses.length; i++) {
       if (word.senses[i].definitions.isEmpty) {
@@ -80,7 +85,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
         return word.senses[i].definitions[0];
       }
     }
-    return "";
+    return wordError;
   }
 
   String getQuestionWord(List<Option> options) {

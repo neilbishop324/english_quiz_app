@@ -1,1 +1,0 @@
-const wordsAndPhrases = -1;

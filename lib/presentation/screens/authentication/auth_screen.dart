@@ -1,6 +1,11 @@
-import 'package:english_quiz_app/presentation/screens/authentication/components/login_component.dart';
-import 'package:english_quiz_app/presentation/screens/authentication/components/signup_component.dart';
+import 'package:english_quiz_app/services/auth_service.dart';
+import 'package:english_quiz_app/util/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:nb_utils/nb_utils.dart';
+
+import '../dashboard/home_screen.dart';
+import 'components/login_component.dart';
+import 'components/signup_component.dart';
 
 class AuthScreen extends StatefulWidget {
   static const String routeName = "/auth";
@@ -12,24 +17,46 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
+  bool _showLogin = true;
+
+  void _switchAuthMode() {
+    setState(() {
+      _showLogin = !_showLogin;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-        length: 2,
-        child: Scaffold(
-            appBar: AppBar(
-              title: const Text("Login"),
-              bottom: const TabBar(tabs: [
-                Tab(
-                  text: "Sign in",
+    return Scaffold(
+      backgroundColor: Colors.grey.shade200,
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                _showLogin ? "Welcome back!" : "Register",
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
                 ),
-                Tab(
-                  text: "Sign up",
-                )
-              ]),
-            ),
-            body: const TabBarView(
-              children: [LoginComponent(), SignUpComponent()],
-            )));
+              ),
+              10.height,
+              _showLogin ? LoginComponent() : SignUpComponent(),
+              TextButton(
+                onPressed: _switchAuthMode,
+                child: Text(
+                  _showLogin
+                      ? "Don't have an account? Sign up"
+                      : "Already have an account? Login",
+                  style: const TextStyle(color: primaryColor),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

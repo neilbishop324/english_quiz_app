@@ -9,8 +9,10 @@ import 'package:english_quiz_app/presentation/router/app_router.dart';
 import 'package:english_quiz_app/presentation/screens/authentication/auth_screen.dart';
 import 'package:english_quiz_app/presentation/screens/dashboard/home_screen.dart';
 import 'package:english_quiz_app/services/auth_service.dart';
+import 'package:english_quiz_app/util/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nb_utils/nb_utils.dart';
 
 void main() {
   runApp(
@@ -47,9 +49,13 @@ class _MyAppState extends State<MyApp> {
     return BlocBuilder<UserCubit, UserState>(
       builder: (context, state) {
         return MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'English Quiz App',
           theme: ThemeData(
-            primarySwatch: Colors.blue,
+            primaryColorLight: primaryLightColor,
+            primaryColorDark: primaryDarkColor,
+            colorScheme: ColorScheme.fromSwatch()
+                .copyWith(primary: primaryColor, secondary: secondaryColor),
           ),
           onGenerateRoute: _appRouter.onGenerateRoute,
           home: state.user.token.isNotEmpty

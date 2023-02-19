@@ -7,7 +7,7 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:http/http.dart' as http;
 import '../logic/user/cubit/user_cubit.dart';
 import '../presentation/screens/authentication/auth_screen.dart';
-import '../util/global_variables.dart';
+import '../util/constants.dart';
 
 class AccountService {
   Future<bool> isInFavorites(String word) async {

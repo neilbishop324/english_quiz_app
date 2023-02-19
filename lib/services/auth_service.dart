@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:english_quiz_app/logic/user/cubit/user_cubit.dart';
 import 'package:english_quiz_app/util/error_handling.dart';
-import 'package:english_quiz_app/util/global_variables.dart';
+import 'package:english_quiz_app/util/constants.dart';
 import 'package:english_quiz_app/util/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

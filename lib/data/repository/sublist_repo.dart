@@ -3,7 +3,7 @@ import 'package:english_quiz_app/data/model/sublist_word.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:nb_utils/nb_utils.dart';
-import '../../util/global_variables.dart';
+import '../../util/constants.dart';
 
 abstract class SublistRepository {
   Future<List<SublistWord>?> fetchSublist({required int listId});
