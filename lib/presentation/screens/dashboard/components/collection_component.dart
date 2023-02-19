@@ -1,4 +1,3 @@
-import 'package:english_quiz_app/data/model/sublist_word.dart';
 import 'package:english_quiz_app/logic/user/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -21,10 +20,7 @@ class _CollectionComponentState extends State<CollectionComponent> {
   Widget build(BuildContext context) {
     return BlocBuilder<UserCubit, UserState>(
       builder: (context, state) {
-        return wordListWidget(
-            state.user.favorites.map((e) => SublistWord(word: e)).toList(),
-            true,
-            context);
+        return wordListWidget(state.user.favorites, true, context);
       },
     );
   }

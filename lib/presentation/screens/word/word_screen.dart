@@ -1,6 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:english_quiz_app/data/model/word.dart';
-import 'package:english_quiz_app/logic/user/cubit/user_cubit.dart';
 import 'package:english_quiz_app/logic/word/bloc/word_bloc.dart';
 import 'package:english_quiz_app/presentation/util/utils.dart';
 import 'package:flutter/material.dart';

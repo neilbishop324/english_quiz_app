@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nb_utils/nb_utils.dart';
-
-import '../../data/model/sublist_word.dart';
 import '../../logic/word/bloc/word_bloc.dart';
 import '../screens/word/word_screen.dart';
 
@@ -44,7 +42,7 @@ Widget nothing() {
 }
 
 Widget wordListWidget(
-    List<SublistWord> data, bool fromWordsAndPhrases, BuildContext context) {
+    List<String> data, bool fromWordsAndPhrases, BuildContext context) {
   return SingleChildScrollView(
     physics: const ScrollPhysics(),
     child: ListView.builder(
@@ -69,13 +67,13 @@ Widget wordListWidget(
             child: InkWell(
               onTap: () {
                 BlocProvider.of<WordBloc>(context)
-                    .add(LoadWord(data[index].word, !fromWordsAndPhrases));
+                    .add(LoadWord(data[index], !fromWordsAndPhrases));
                 Navigator.pushNamed(context, WordScreen.routeName);
               },
               child: SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: Text(
-                  data[index].word,
+                  data[index],
                   style: const TextStyle(fontSize: 18),
                 ).paddingAll(10),
               ),

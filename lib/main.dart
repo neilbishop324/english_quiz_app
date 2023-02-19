@@ -12,7 +12,6 @@ import 'package:english_quiz_app/services/auth_service.dart';
 import 'package:english_quiz_app/util/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nb_utils/nb_utils.dart';
 
 void main() {
   runApp(

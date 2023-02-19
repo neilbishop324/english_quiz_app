@@ -1,6 +1,5 @@
-import 'package:bloc/bloc.dart';
 import 'package:english_quiz_app/data/model/user.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'user_state.dart';
 

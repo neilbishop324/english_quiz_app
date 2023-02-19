@@ -8,7 +8,7 @@ class SublistInitial extends SublistState {}
 class SublistLoading extends SublistState {}
 
 class SublistLoaded extends SublistState {
-  final List<SublistWord> data;
+  final List<String> data;
 
   SublistLoaded(this.data);
 }

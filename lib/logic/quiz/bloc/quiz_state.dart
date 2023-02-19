@@ -23,10 +23,10 @@ class QuizError extends QuizState {
 }
 
 class QuizFinished extends QuizState {
-  final int trueSize;
-  final int falseSize;
+  final int correctAnswer;
+  final int incorrectAnswer;
   QuizFinished({
-    required this.trueSize,
-    required this.falseSize,
+    required this.correctAnswer,
+    required this.incorrectAnswer,
   });
 }

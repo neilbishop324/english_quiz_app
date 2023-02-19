@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../../../util/constants.dart';
-import '../../../util/utils.dart';
 
 class LoginComponent extends StatelessWidget {
   final AuthService _authService = AuthService();

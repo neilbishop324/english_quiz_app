@@ -1,20 +1,19 @@
 import 'dart:convert';
-import 'package:english_quiz_app/data/model/sublist_word.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:nb_utils/nb_utils.dart';
 import '../../util/constants.dart';
 
 abstract class SublistRepository {
-  Future<List<SublistWord>?> fetchSublist({required int listId});
-  Future<List<SublistWord>?> fetchWordsAndPhrases({required int pageNumber});
+  Future<List<String>?> fetchSublist({required int listId});
+  Future<List<String>?> fetchWordsAndPhrases({required int pageNumber});
 }
 
 class SublistRepo extends SublistRepository {
   @override
-  Future<List<SublistWord>?> fetchSublist({required int listId}) async {
+  Future<List<String>?> fetchSublist({required int listId}) async {
     try {
-      var sublist = <SublistWord>[];
+      var sublist = <String>[];
       await dotenv.load(fileName: "secret.env");
       String uri = dotenv.env['URI'].toString();
       http.Response res = await http
@@ -27,7 +26,7 @@ class SublistRepo extends SublistRepository {
         List<Map<String, dynamic>> listData =
             List<Map<String, dynamic>>.from(jsonData);
         for (Map<String, dynamic> data in listData) {
-          sublist.add(SublistWord(word: data["word"]));
+          sublist.add(data["word"]);
         }
       } else {
         log("Resource body: ${res.body}");
@@ -42,10 +41,9 @@ class SublistRepo extends SublistRepository {
   }
 
   @override
-  Future<List<SublistWord>?> fetchWordsAndPhrases(
-      {required int pageNumber}) async {
+  Future<List<String>?> fetchWordsAndPhrases({required int pageNumber}) async {
     try {
-      var list = <SublistWord>[];
+      var list = <String>[];
       await dotenv.load(fileName: "secret.env");
       String uri = dotenv.env['URI'].toString();
       http.Response res = await http.post(
@@ -59,7 +57,7 @@ class SublistRepo extends SublistRepository {
         List<Map<String, dynamic>> listData =
             List<Map<String, dynamic>>.from(jsonData);
         for (Map<String, dynamic> data in listData) {
-          list.add(SublistWord(word: data["en"]));
+          list.add(data["en"]);
         }
       } else {
         log("Resource body: ${res.body}");

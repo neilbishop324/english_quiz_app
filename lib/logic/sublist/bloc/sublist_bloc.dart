@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-import 'package:english_quiz_app/data/model/sublist_word.dart';
 import 'package:english_quiz_app/data/repository/sublist_repo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,7 +6,7 @@ part 'sublist_event.dart';
 part 'sublist_state.dart';
 
 class SublistBloc extends Bloc<SublistEvent, SublistState> {
-  late List<SublistWord> wordList;
+  late List<String> wordList;
   final SublistRepo sublistRepo;
   var pageNumber = 1;
 

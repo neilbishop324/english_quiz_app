@@ -1,18 +1,11 @@
-import 'dart:math';
-
 import 'package:english_quiz_app/logic/home/cubit/home_cubit.dart';
-import 'package:english_quiz_app/logic/sublist/bloc/sublist_bloc.dart';
 import 'package:english_quiz_app/logic/user/cubit/user_cubit.dart';
 import 'package:english_quiz_app/presentation/screens/dashboard/components/collection_component.dart';
 import 'package:english_quiz_app/presentation/screens/dashboard/components/home_component.dart';
 import 'package:english_quiz_app/presentation/screens/dashboard/components/profile_component.dart';
-import 'package:english_quiz_app/util/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:random_avatar/random_avatar.dart';
 
 import '../../../data/model/question.dart';
 import '../../../logic/quiz/bloc/quiz_bloc.dart';

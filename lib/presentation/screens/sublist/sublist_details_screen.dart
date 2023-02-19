@@ -1,13 +1,8 @@
-import 'package:english_quiz_app/data/model/sublist_word.dart';
-import 'package:english_quiz_app/logic/word/bloc/word_bloc.dart';
 import 'package:english_quiz_app/presentation/screens/error/components/error_component.dart';
-import 'package:english_quiz_app/presentation/screens/word/word_screen.dart';
 import 'package:english_quiz_app/presentation/util/utils.dart';
 import 'package:english_quiz_app/util/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nb_utils/nb_utils.dart';
-
 import '../../../logic/sublist/bloc/sublist_bloc.dart';
 import '../dashboard/home_screen.dart';
 import '../quiz/quiz_screen.dart';
@@ -45,7 +40,7 @@ class _SublistDetailsScreenState extends State<SublistDetailsScreen> {
             floatingActionButton: FloatingActionButton.extended(
               onPressed: () {
                 if (state is SublistLoaded) {
-                  _quiz(context, state.data.map((e) => e.word).toList());
+                  _quiz(context, state.data);
                 }
               },
               label: const Text("Quiz"),

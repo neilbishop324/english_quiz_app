@@ -50,7 +50,7 @@ class QuizFinishedComponent extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    state.trueSize.toString(),
+                    state.correctAnswer.toString(),
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,
@@ -78,7 +78,7 @@ class QuizFinishedComponent extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    state.falseSize.toString(),
+                    state.incorrectAnswer.toString(),
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,

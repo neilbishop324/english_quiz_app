@@ -2,8 +2,6 @@ import 'package:english_quiz_app/logic/sublist/bloc/sublist_bloc.dart';
 import 'package:english_quiz_app/presentation/screens/sublist/sublist_details_screen.dart';
 import 'package:english_quiz_app/util/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nb_utils/nb_utils.dart';
 

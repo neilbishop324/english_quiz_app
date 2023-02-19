@@ -1,16 +1,10 @@
 import 'dart:convert';
-import 'dart:io';
-
 import 'package:english_quiz_app/logic/user/cubit/user_cubit.dart';
 import 'package:english_quiz_app/util/error_handling.dart';
-import 'package:english_quiz_app/util/constants.dart';
-import 'package:english_quiz_app/util/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../data/model/user.dart';
 import 'package:http/http.dart' as http;
 

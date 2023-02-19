@@ -2,7 +2,6 @@ import 'package:english_quiz_app/data/model/question.dart';
 import 'package:english_quiz_app/logic/quiz/bloc/quiz_bloc.dart';
 import 'package:english_quiz_app/presentation/screens/dashboard/home_screen.dart';
 import 'package:english_quiz_app/presentation/screens/quiz/components/quiz_finished_component.dart';
-import 'package:english_quiz_app/presentation/util/utils.dart';
 import 'package:english_quiz_app/util/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
