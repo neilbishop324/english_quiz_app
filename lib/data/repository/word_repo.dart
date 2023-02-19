@@ -48,7 +48,7 @@ class WordRepo extends WordRepository {
 
   Future<String?> getTurkishTranslation(String word, String uri) async {
     try {
-      final url = "$uri$apiUri/word/$word";
+      final url = "$uri/word/$word";
       http.Response response = await http.post(Uri.parse(url), headers: {
         'Content-Type': 'application/json; charset=UTF-8',
       });

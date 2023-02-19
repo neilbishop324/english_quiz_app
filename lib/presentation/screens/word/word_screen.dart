@@ -1,5 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:english_quiz_app/data/model/word.dart';
+import 'package:english_quiz_app/logic/user/cubit/user_cubit.dart';
 import 'package:english_quiz_app/logic/word/bloc/word_bloc.dart';
 import 'package:english_quiz_app/presentation/util/utils.dart';
 import 'package:flutter/material.dart';
@@ -20,12 +21,11 @@ class WordScreen extends StatefulWidget {
 class _WordScreenState extends State<WordScreen> {
   final audioPlayer = AudioPlayer();
   bool isPlaying = false;
-  bool isInFavorites = false;
 
   @override
   void initState() {
+    final wordBloc = context.read<WordBloc>();
     audioPlayer.onPlayerStateChanged.listen((state) {
-      final wordBloc = context.read<WordBloc>();
       if (wordBloc.state is WordLoaded) {
         isPlaying = state == PlayerState.playing;
         context.read<WordBloc>().add(PronIsPlaying(isPlaying));
@@ -56,7 +56,7 @@ class _WordScreenState extends State<WordScreen> {
     } else if (state is WordLoading) {
       return const Center(child: CircularProgressIndicator());
     } else if (state is WordError) {
-      return const ErrorComponent();
+      return ErrorComponent(errorContent: state.error);
     } else {
       return const SizedBox();
     }
@@ -120,15 +120,15 @@ class _WordScreenState extends State<WordScreen> {
                       ),
                     )
                   : nothing(),
+              (word.tr == null)
+                  ? 10.height
+                  : Text(
+                      word.tr!,
+                      style: const TextStyle(fontSize: 24, color: cadetBlue),
+                    ).paddingSymmetric(vertical: 10),
             ],
           ),
         ),
-        (word.tr == null)
-            ? 10.height
-            : Text(
-                word.tr!,
-                style: Theme.of(context).textTheme.displaySmall,
-              ).paddingSymmetric(vertical: 10),
       ],
     );
   }
@@ -185,7 +185,9 @@ class _WordScreenState extends State<WordScreen> {
           onPressed: () => addToFavorites(state),
           backgroundColor: redColor,
           child: Icon(
-            (isInFavorites) ? Icons.favorite : Icons.favorite_border,
+            ((state is WordLoaded) ? state.isInFavorites : false)
+                ? Icons.favorite
+                : Icons.favorite_border,
           ),
         ),
         16.height,
@@ -210,11 +212,12 @@ class _WordScreenState extends State<WordScreen> {
   }
 
   void addToFavorites(WordState state) async {
-    isInFavorites = !isInFavorites;
     if (state is WordLoaded) {
       final wordBloc = context.read<WordBloc>();
       if (wordBloc.state is WordLoaded) {
-        context.read<WordBloc>().add(AddFavorite(isInFavorites));
+        context
+            .read<WordBloc>()
+            .add(AddFavorite(context, !state.isInFavorites));
       }
     }
   }

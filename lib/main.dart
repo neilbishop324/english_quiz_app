@@ -1,6 +1,7 @@
 import 'package:english_quiz_app/data/repository/sublist_repo.dart';
 import 'package:english_quiz_app/data/repository/word_repo.dart';
 import 'package:english_quiz_app/logic/home/cubit/home_cubit.dart';
+import 'package:english_quiz_app/logic/quiz/bloc/quiz_bloc.dart';
 import 'package:english_quiz_app/logic/sublist/bloc/sublist_bloc.dart';
 import 'package:english_quiz_app/logic/user/cubit/user_cubit.dart';
 import 'package:english_quiz_app/logic/word/bloc/word_bloc.dart';
@@ -18,7 +19,8 @@ void main() {
       BlocProvider<HomeCubit>(create: (context) => HomeCubit()),
       BlocProvider<SublistBloc>(
           create: (context) => SublistBloc(SublistRepo())),
-      BlocProvider<WordBloc>(create: (context) => WordBloc(WordRepo()))
+      BlocProvider<WordBloc>(create: (context) => WordBloc(WordRepo())),
+      BlocProvider<QuizBloc>(create: ((context) => QuizBloc())),
     ], child: const MyApp()),
   );
 }

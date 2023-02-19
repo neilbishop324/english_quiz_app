@@ -21,7 +21,11 @@ class PronIsPlaying extends WordEvent {
 }
 
 class AddFavorite extends WordEvent {
+  final BuildContext context;
   final bool willBeFavorite;
 
-  AddFavorite(this.willBeFavorite);
+  AddFavorite(
+    this.context,
+    this.willBeFavorite,
+  );
 }

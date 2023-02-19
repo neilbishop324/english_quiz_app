@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nb_utils/nb_utils.dart';
+
+import '../../data/model/sublist_word.dart';
+import '../../logic/word/bloc/word_bloc.dart';
+import '../screens/word/word_screen.dart';
 
 Widget eqTextField(
     {required TextEditingController controller,
@@ -36,4 +41,48 @@ Widget eqButton({required String text, required VoidCallback onPressed}) {
 
 Widget nothing() {
   return const SizedBox();
+}
+
+Widget wordListWidget(
+    List<SublistWord> data, bool fromWordsAndPhrases, BuildContext context) {
+  return SingleChildScrollView(
+    physics: const ScrollPhysics(),
+    child: ListView.builder(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: data.length,
+      itemBuilder: (context, index) {
+        return Container(
+          decoration: BoxDecoration(
+            color: white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 1,
+                blurRadius: 5,
+                offset: const Offset(4, 6), // changes position of shadow
+              ),
+            ],
+          ),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {
+                BlocProvider.of<WordBloc>(context)
+                    .add(LoadWord(data[index].word, !fromWordsAndPhrases));
+                Navigator.pushNamed(context, WordScreen.routeName);
+              },
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Text(
+                  data[index].word,
+                  style: const TextStyle(fontSize: 18),
+                ).paddingAll(10),
+              ),
+            ),
+          ),
+        ).paddingAll(8).cornerRadiusWithClipRRect(8);
+      },
+    ).paddingAll(8),
+  );
 }

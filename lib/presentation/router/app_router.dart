@@ -7,10 +7,13 @@ import 'package:english_quiz_app/presentation/screens/word/word_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../screens/quiz/quiz_screen.dart';
+
 class AppRouter {
   Route onGenerateRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
       case '/':
+      case AuthScreen.routeName:
         return MaterialPageRoute(builder: (_) => const AuthScreen());
       case HomeScreen.routeName:
         return MaterialPageRoute(builder: (_) => const HomeScreen());
@@ -20,6 +23,11 @@ class AppRouter {
             builder: (_) => const SublistDetailsScreen());
       case WordScreen.routeName:
         return MaterialPageRoute(builder: (_) => const WordScreen());
+      case QuizScreen.routeName:
+        return MaterialPageRoute(
+          settings: routeSettings,
+          builder: (_) => const QuizScreen(),
+        );
       default:
         return MaterialPageRoute(builder: (_) => const SizedBox());
     }

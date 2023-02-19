@@ -3,6 +3,8 @@ import 'package:english_quiz_app/presentation/screens/authentication/components/
 import 'package:flutter/material.dart';
 
 class AuthScreen extends StatefulWidget {
+  static const String routeName = "/auth";
+
   const AuthScreen({super.key});
 
   @override

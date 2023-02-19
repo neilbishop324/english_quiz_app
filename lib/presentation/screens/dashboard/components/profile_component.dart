@@ -1,3 +1,5 @@
+import 'package:english_quiz_app/presentation/util/utils.dart';
+import 'package:english_quiz_app/services/account_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -15,6 +17,8 @@ class ProfileComponent extends StatefulWidget {
 }
 
 class _ProfileComponentState extends State<ProfileComponent> {
+  final accountService = AccountService();
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UserCubit, UserState>(
@@ -32,10 +36,15 @@ class _ProfileComponentState extends State<ProfileComponent> {
             Text(
               state.user.name,
               style: const TextStyle(fontSize: 18),
-            )
+            ),
+            eqButton(text: "Log Out", onPressed: () => logOut(context))
           ],
         );
       },
     );
+  }
+
+  void logOut(BuildContext context) async {
+    accountService.logOut(context);
   }
 }

@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:english_quiz_app/services/account_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,9 +22,9 @@ class WordBloc extends Bloc<WordEvent, WordState> {
       await Future.delayed(const Duration(seconds: 3), () async {
         word = await WordRepo().fetchWord(event);
         if (word == null) {
-          emit(WordError());
+          emit(WordError("Word was not found!"));
         } else {
-          final inFavorites = await isInFavorites();
+          final inFavorites = await isInFavorites(word!.en);
           emit(WordLoaded(word!, false, inFavorites));
         }
       });
@@ -37,12 +40,17 @@ class WordBloc extends Bloc<WordEvent, WordState> {
     on<AddFavorite>((event, emit) async {
       if (state is WordLoaded) {
         final state = this.state as WordLoaded;
+        AccountService().updateFavorites(
+          shouldAdd: event.willBeFavorite,
+          word: state.data.en,
+          context: event.context,
+        );
         emit(WordLoaded(state.data, state.isPlaying, event.willBeFavorite));
       }
     });
   }
 
-  Future<bool> isInFavorites() async {
-    return false;
+  Future<bool> isInFavorites(String word) async {
+    return AccountService().isInFavorites(word);
   }
 }

@@ -2,11 +2,15 @@ import 'package:english_quiz_app/data/model/sublist_word.dart';
 import 'package:english_quiz_app/logic/word/bloc/word_bloc.dart';
 import 'package:english_quiz_app/presentation/screens/error/components/error_component.dart';
 import 'package:english_quiz_app/presentation/screens/word/word_screen.dart';
+import 'package:english_quiz_app/presentation/util/utils.dart';
+import 'package:english_quiz_app/util/global_variables.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../../logic/sublist/bloc/sublist_bloc.dart';
+import '../dashboard/home_screen.dart';
+import '../quiz/quiz_screen.dart';
 
 class SublistDetailsScreen extends StatefulWidget {
   const SublistDetailsScreen({super.key});
@@ -18,72 +22,88 @@ class SublistDetailsScreen extends StatefulWidget {
 }
 
 class _SublistDetailsScreenState extends State<SublistDetailsScreen> {
+  var pageNumber = 1;
+
+  @override
+  void initState() {
+    pageNumber = context.read<SublistBloc>().pageNumber;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context)!.settings.arguments as SublistDetailsArguments;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Sublist ${args.listId}"),
-      ),
-      body: BlocConsumer<SublistBloc, SublistState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          if (state is SublistLoaded) {
-            return buildLoadedlayout(state.data);
-          } else if (state is SublistLoading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (state is SublistError) {
-            return const ErrorComponent();
-          } else {
-            return const SizedBox();
-          }
-        },
+    bool fromWordsAndPhrases = (args.listId == wordsAndPhrases);
+    final title = fromWordsAndPhrases
+        ? "Words And Phrases"
+        : "Sublist ${args.listId + 1}";
+    return BlocConsumer<SublistBloc, SublistState>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        return Scaffold(
+            floatingActionButton: FloatingActionButton.extended(
+              onPressed: () {
+                if (state is SublistLoaded) {
+                  _quiz(context, state.data.map((e) => e.word).toList());
+                }
+              },
+              label: const Text("Quiz"),
+              icon: const Icon(Icons.quiz),
+            ),
+            appBar: AppBar(
+              title: Text(title),
+              actions: [actionsLayout(args)],
+            ),
+            body: bodyComponent(state, fromWordsAndPhrases));
+      },
+    );
+  }
+
+  Widget bodyComponent(SublistState state, bool fromWordsAndPhrases) {
+    if (state is SublistLoaded) {
+      return wordListWidget(state.data, fromWordsAndPhrases, context);
+    } else if (state is SublistLoading) {
+      return const Center(child: CircularProgressIndicator());
+    } else if (state is SublistError) {
+      return const ErrorComponent();
+    } else {
+      return const SizedBox();
+    }
+  }
+
+  Widget actionsLayout(SublistDetailsArguments args) {
+    return Visibility(
+      visible: args.listId == wordsAndPhrases,
+      child: Row(
+        children: [
+          IconButton(
+            onPressed: () {
+              if (pageNumber > 1) {
+                pageNumber--;
+                BlocProvider.of<SublistBloc>(context)
+                    .add(WordsAndPhrasesData(pageNumber));
+              }
+            },
+            icon: const Icon(Icons.chevron_left),
+          ),
+          IconButton(
+            onPressed: () {
+              pageNumber++;
+              BlocProvider.of<SublistBloc>(context)
+                  .add(WordsAndPhrasesData(pageNumber));
+            },
+            icon: const Icon(Icons.chevron_right),
+          ),
+        ],
       ),
     );
   }
 
-  Widget buildLoadedlayout(List<SublistWord> data) {
-    return SingleChildScrollView(
-      physics: const ScrollPhysics(),
-      child: ListView.builder(
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: data.length,
-        itemBuilder: (context, index) {
-          return Container(
-            decoration: BoxDecoration(
-              color: white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 1,
-                  blurRadius: 5,
-                  offset: const Offset(4, 6), // changes position of shadow
-                ),
-              ],
-            ),
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: () {
-                  BlocProvider.of<WordBloc>(context)
-                      .add(LoadWord(data[index].word, true));
-                  Navigator.pushNamed(context, WordScreen.routeName);
-                },
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: Text(
-                    data[index].word,
-                    style: const TextStyle(fontSize: 18),
-                  ).paddingAll(10),
-                ),
-              ),
-            ),
-          ).paddingAll(8).cornerRadiusWithClipRRect(8);
-        },
-      ).paddingAll(8),
-    );
+  void _quiz(BuildContext context, List<String> wordList) {
+    createQuestion(wordList, context, 1);
+    Navigator.pushNamed(context, QuizScreen.routeName,
+        arguments: QuizScreenArgs(wordList));
   }
 }
 

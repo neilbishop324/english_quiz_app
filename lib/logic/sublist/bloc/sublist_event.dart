@@ -11,3 +11,9 @@ class SublistData extends SublistEvent {
     this.listId,
   );
 }
+
+class WordsAndPhrasesData extends SublistEvent {
+  final int pageNumber;
+
+  WordsAndPhrasesData(this.pageNumber);
+}

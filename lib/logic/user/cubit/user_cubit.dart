@@ -7,7 +7,13 @@ part 'user_state.dart';
 class UserCubit extends Cubit<UserState> {
   UserCubit()
       : super(UserState(
-            user: User(id: "", email: "", password: "", name: "", token: "")));
+            user: User(
+                id: "",
+                email: "",
+                password: "",
+                name: "",
+                favorites: List.empty(),
+                token: "")));
 
   void setUser(String user) => emit(UserState(user: User.fromJson(user)));
   User get user => state.user;

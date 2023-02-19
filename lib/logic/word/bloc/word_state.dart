@@ -15,4 +15,8 @@ class WordLoaded extends WordState {
   WordLoaded(this.data, this.isPlaying, this.isInFavorites);
 }
 
-class WordError extends WordState {}
+class WordError extends WordState {
+  final String error;
+
+  WordError(this.error);
+}

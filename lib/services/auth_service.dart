@@ -24,9 +24,14 @@ class AuthService {
       await dotenv.load(fileName: "secret.env");
       String uri = dotenv.env['URI'].toString();
 
-      User user =
-          User(id: "", email: email, password: password, name: name, token: "");
-      http.Response res = await http.post(Uri.parse('$uri$apiUri/auth/signup'),
+      User user = User(
+          id: "",
+          email: email,
+          password: password,
+          name: name,
+          favorites: List.empty(),
+          token: "");
+      http.Response res = await http.post(Uri.parse('$uri/auth/signup'),
           body: user.toJson(),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
@@ -56,7 +61,7 @@ class AuthService {
       await dotenv.load(fileName: "secret.env");
       String uri = dotenv.env['URI'].toString();
 
-      http.Response res = await http.post(Uri.parse('$uri$apiUri/auth/signin'),
+      http.Response res = await http.post(Uri.parse('$uri/auth/signin'),
           body: jsonEncode({
             'email': email,
             'password': password,
@@ -97,7 +102,7 @@ class AuthService {
       await dotenv.load(fileName: "secret.env");
       String uri = dotenv.env['URI'].toString();
 
-      var tokenRes = await http.post(Uri.parse("$uri$apiUri/auth/tokenIsValid"),
+      var tokenRes = await http.post(Uri.parse("$uri/auth/tokenIsValid"),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             "x-auth-token": token!
@@ -106,7 +111,7 @@ class AuthService {
       var response = jsonDecode(tokenRes.body);
       if (response == true) {
         http.Response userRes = await http.get(
-          Uri.parse("$uri$apiUri/auth/"),
+          Uri.parse("$uri/auth/"),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             "x-auth-token": token
@@ -118,8 +123,9 @@ class AuthService {
           context.read<UserCubit>().setUser(user);
         }
       }
-    } catch (e) {
-      log(e);
+    } catch (e, stackTrace) {
+      log("Error: $e");
+      log("Stack Trace: $stackTrace");
     }
   }
 }
